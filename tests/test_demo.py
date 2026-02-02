@@ -26,8 +26,6 @@ def test_get_all_products(product_api):
         assert 'name' in product
         assert 'description' in product
 
-    print(response['data'][0])
-
 def test_create_product(api_handler, product_api):
     global product_id
     product_data = generate_new_product_data(api_handler)
