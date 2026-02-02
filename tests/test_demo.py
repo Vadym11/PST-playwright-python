@@ -6,7 +6,6 @@ from utils.test_utils import generate_new_product_data
 from utils.load_settings import settings
 
 api_url = settings['api-url']
-product_id = ''
 
 @allure.story("Test create product 0")
 @allure.title("Verify the create products API 0")
@@ -38,26 +37,20 @@ def test_get_all_products(product_api):
 @allure.title("Verify the create products API")
 @allure.description("verify the create product API response status code and data")
 @allure.severity("normal")
-def test_create_product(api_handler, product_api):
-    global product_id
-    product_data = generate_new_product_data(api_handler)
+def test_create_product(api_handler, product_api, created_product, generated_product_data):
+    product_data = generated_product_data
 
-    response = product_api.create(product_data)
-
-    product_id = response["id"]
-
-    assert response['name'] == product_data.get("name")
-    assert response['description'] == product_data.get("description")
-    assert response['price'] == product_data.get("price")
+    assert created_product['name'] == product_data.get("name")
+    assert created_product['description'] == product_data.get("description")
+    assert created_product['price'] == product_data.get("price")
 
 @allure.story("Test delete product")
 @allure.title("Verify the delete products API")
 @allure.description("verify the delete product API response status code and data")
 @allure.severity("normal")
-def test_delete_product_by_id(product_api):
-    global product_id
-
-    response = product_api.delete_by_id(product_id)
+def test_delete_product_by_id(product_api, created_product):
+    created_product = created_product
+    response = product_api.delete_by_id(created_product['id'])
 
     assert response == 204
 
