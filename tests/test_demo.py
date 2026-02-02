@@ -2,8 +2,8 @@ import os
 import allure
 import requests
 from conftest import product_api
-from utils.test_utils import generate_new_product_data
 from utils.load_settings import settings
+import pytest
 
 api_url = settings['api-url']
 
@@ -11,6 +11,7 @@ api_url = settings['api-url']
 @allure.title("Verify the create products API 0")
 @allure.description("verify the create product API response status code and data 0")
 @allure.severity("normal")
+@pytest.mark.Regression  # mark the test case as regression
 def test_get_products():
     api_endpoint = api_url + "/products/"
     print(api_endpoint)
@@ -25,6 +26,7 @@ def test_get_products():
 @allure.title("Verify the get all products API")
 @allure.description("verify the get API response status code and data")
 @allure.severity("normal")
+@pytest.mark.Regression  # mark the test case as regression
 def test_get_all_products(product_api):
     response = product_api.get_all_products()
 
@@ -37,6 +39,7 @@ def test_get_all_products(product_api):
 @allure.title("Verify the create products API")
 @allure.description("verify the create product API response status code and data")
 @allure.severity("normal")
+@pytest.mark.Smoke  # mark the test case as smoke
 def test_create_product(api_handler, product_api, created_product, generated_product_data):
     product_data = generated_product_data
 
@@ -48,8 +51,8 @@ def test_create_product(api_handler, product_api, created_product, generated_pro
 @allure.title("Verify the delete products API")
 @allure.description("verify the delete product API response status code and data")
 @allure.severity("normal")
+@pytest.mark.Smoke  # mark the test case as smoke
 def test_delete_product_by_id(product_api, created_product):
-    created_product = created_product
     response = product_api.delete_by_id(created_product['id'])
 
     assert response == 204
@@ -58,5 +61,6 @@ def test_delete_product_by_id(product_api, created_product):
 @allure.title("Verify the get env vars API")
 @allure.description("verify env vars are present")
 @allure.severity("normal")
+@pytest.mark.Smoke  # mark the test case as smoke
 def test_env_vars():
     print(os.environ.get("EMAIL"))

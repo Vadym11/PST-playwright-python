@@ -1,6 +1,7 @@
 {
   "url": "http://localhost:8080/",
   "api-url": "http://localhost:8080/api",
+  "api-url_": "https://api.practicesoftwaretesting.com",
   "mode": "headless",
   "email": "admin@practicesoftwaretesting.com",
   "password": "welcome01"
