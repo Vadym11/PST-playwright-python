@@ -1,5 +1,5 @@
 import pytest
-from AOM.product import ProductAPI
+from AOM.product_api import ProductAPI
 from utils.api_handler import APIHandler
 from utils.test_utils import generate_new_product_data
 

@@ -1,5 +1,5 @@
 def get_all_categories(api_handler):
-    return api_handler.get('/categories', {}, {})
+    return api_handler.get('/categories')
 
 def get_all_brands(api_handler):
     return api_handler.get('/brands', {}, {})

@@ -14,13 +14,23 @@ api_url = settings['api-url']
 @pytest.mark.Regression  # mark the test case as regression
 def test_get_products():
     api_endpoint = api_url + "/products/"
-    print(api_endpoint)
+    print(f'\n{api_endpoint}')
     response = requests.get(api_endpoint)
     assert response.status_code == 200
 
     for product in response.json()["data"]:
         assert 'id' in product
         assert product["id"] == product.get("id")
+
+def test_get_all_products(product_api):
+    response = product_api.get_all_products()
+
+    assert response.status_code == 200
+
+    for product in response['data']:
+        assert 'id' in product
+        assert 'name' in product
+        assert 'description' in product
 
 @allure.story("Test get all products")
 @allure.title("Verify the get all products API")
@@ -64,3 +74,23 @@ def test_delete_product_by_id(product_api, created_product):
 @pytest.mark.Smoke  # mark the test case as smoke
 def test_env_vars():
     print(os.environ.get("EMAIL"))
+
+@pytest.mark.Smoke
+def test_search_product_by_name(product_api, created_product):
+    response_body = product_api.search_by_name(created_product['name'])
+
+    assert 'data' in response_body
+    assert len(response_body['data']) > 0
+
+    for product in response_body['data']:
+        assert 'id' in product
+        assert 'name' in product
+        assert 'description' in product
+
+    assert created_product['name'] == response_body['data'][0]['name']
+
+@pytest.mark.Smoke
+def test_verify_search_by_full_name(product_api, created_product):
+    product_id = product_api.get_product_id(created_product['name'])
+
+    assert product_id == created_product['id']

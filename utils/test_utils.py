@@ -1,5 +1,4 @@
 import random
-import asyncio
 from faker import Faker
 
 from utils.api_utils import *

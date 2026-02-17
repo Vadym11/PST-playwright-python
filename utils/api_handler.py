@@ -14,7 +14,6 @@ class APIHandler:
         self.token = ''
 
     def authenticate_admin(self):
-        print(f'{self.base_url}/users/login')
         response = requests.post(
             f'{self.base_url}/users/login',
             json={'email': self.email, 'password': self.password },
@@ -30,38 +29,31 @@ class APIHandler:
 
         print('APIHandler: Admin authenticated successfully.')
 
-
-    def get(self, endpoint, data, headers):
-        response = requests.request("GET", self.base_url + endpoint, json=data, headers=headers)
-        if response.status_code != 200:
-            raise Exception(response.text)
-
-        return response.json()
-
-    def post(self, endpoint, data, headers):
-        headers = {
+    def _get_headers(self, custom_headers=None):
+        base = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {self.token}'
-        } | (headers or {})
+        }
+        return base | (custom_headers or {})
 
-        response = requests.request("POST", self.base_url + endpoint, data=data, headers=headers)
+    def get(self, endpoint, headers=None, params=None):
+        response = requests.get(self.base_url + endpoint, headers=self._get_headers(headers), params=params)
 
-        if not response.ok:
-            raise Exception(response.text)
+        response.raise_for_status()
 
         return response.json()
 
-    def delete(self, endpoint, headers=None):
+    def post(self, endpoint, data, headers=None):
+        response = requests.post( self.base_url + endpoint, json=data, headers=self._get_headers(headers))
 
-        headers = {
-          'Content-Type': 'application/json',
-          'Authorization': f'Bearer {self.token}'
-        } | (headers or {})
+        response.raise_for_status()
 
-        response = requests.request("DELETE", self.base_url + endpoint, params={}, headers=headers)
+        return response.json()
 
-        if not response.ok:
-            raise Exception(response.text)
+    def delete(self, endpoint, params=None, headers=None):
+        response = requests.delete(self.base_url + endpoint, params=params, headers=self._get_headers(headers))
+
+        response.raise_for_status()
 
         if response.status_code == 204:
             return response.status_code
