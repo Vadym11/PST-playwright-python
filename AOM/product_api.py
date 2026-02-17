@@ -16,7 +16,7 @@ class ProductAPI:
         return response
 
     def delete_by_id(self, product_id):
-        response = self.api_handler.delete('/products/{}'.format(product_id))
+        response = self.api_handler.delete(f'/products/{product_id}')
 
         return response
 

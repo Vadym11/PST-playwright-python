@@ -75,6 +75,7 @@ def test_delete_product_by_id(product_api, created_product):
 def test_env_vars():
     print(os.environ.get("EMAIL"))
 
+@allure.severity("critical")
 @pytest.mark.Smoke
 def test_search_product_by_name(product_api, created_product):
     response_body = product_api.search_by_name(created_product['name'])
