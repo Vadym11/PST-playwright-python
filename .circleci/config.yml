@@ -21,7 +21,11 @@ jobs:
           command: |
             pip install pytest-playwright allure-pytest
             playwright install chromium
-            brew install allure
+            ALLURE_VERSION="2.24.0"
+            curl -L -o allure.tgz "https://github.com{ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz"
+            tar -xzf allure.tgz
+            sudo mv allure-${ALLURE_VERSION} /opt/allure
+            sudo ln -s /opt/allure/bin/allure /usr/bin/allure
 
       - run:
           name: Run Playwright Tests
