@@ -15,7 +15,7 @@ class HomePage(BasePage):
 
     def go_to(self, url) -> "HomePage":
         # Use _page to match your BasePage
-        self._page.goto(url)
+        self._page.goto(url, wait_until="networkidle", timeout=60000)
         return self
 
     def filter_eco_products(self) -> "HomePage":
