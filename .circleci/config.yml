@@ -1,0 +1,64 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+  slack: circleci/slack@4.12.1 # Add the Slack Orb
+
+jobs:
+  run-playwright-tests:
+    machine:
+      image: ubuntu-2204:2023.07.2
+
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependency-file: requirements.txt
+
+      - run:
+          name: Install Playwright & Allure
+          command: |
+            pip install pytest-playwright allure-pytest
+            playwright install --with-deps chromium
+            sudo npm install -g allure-commandline --unsafe-perm=true
+
+      - run:
+          name: Run Playwright Tests
+          command: |
+            pytest --alluredir=allure-results --tracing=retain-on-failure
+          when: always
+
+      - run:
+          name: Generate Allure Report
+          command: allure generate allure-results -o allure-report --clean
+          when: always
+
+      - store_test_results:
+          path: allure-results
+      - store_artifacts:
+          path: allure-report
+
+      # Send notification based on job status
+      - slack/notify:
+          event: always # Send on fail and success
+          template: basic_success_1 if "${CIRCLE_JOB_STATUS}" == "success" else basic_fail_1
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Playwright Tests *${CIRCLE_JOB_STATUS}* \n *Branch:* ${CIRCLE_BRANCH}"
+                  }
+                }
+              ]
+            }
+
+workflows:
+  playwright-workflow:
+    jobs:
+      - run-playwright-tests:
+          filters:
+            branches:
+              only: [main]
