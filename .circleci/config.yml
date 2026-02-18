@@ -44,7 +44,8 @@ jobs:
           path: allure-report
 
       # Send notification based on job status
-      - slack/notify:
+      - slack/status:
+          fail_only: false
           webhook: "${SLACK_WEBHOOK}"
           event: always # Send on fail and success
           template: basic_success_1 if "${CIRCLE_JOB_STATUS}" == "success" else basic_fail_1
