@@ -47,10 +47,8 @@ jobs:
       - slack/status:
           fail_only: false
           webhook: "${SLACK_WEBHOOK}"
-          message: |
-            Playwright Results: *${CIRCLE_JOB_STATUS}*
-            Branch: *${CIRCLE_BRANCH}*
-            <https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html|View Full Allure Report>
+          include_project_field: true
+          project_field_value: "Results: ${CIRCLE_JOB_STATUS}\n<https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html|View Allure Report>"
           only_for_branches: main
           mentions: "here"
 
