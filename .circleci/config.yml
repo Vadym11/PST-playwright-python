@@ -48,8 +48,8 @@ jobs:
           fail_only: false
           webhook: "${SLACK_WEBHOOK}"
 #          only_for_branches: main
-          success_message: "Tests Passed! View Report: https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
-          failure_message: "Tests Failed! View Report: https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
+          success_message: "Tests Passed! View Report: https://output.circle-artifacts.com/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
+          failure_message: "Tests Failed! View Report: https://output.circle-artifacts.com/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
           mentions: "here"
 
 workflows:
