@@ -30,3 +30,8 @@ def generated_product_data(api_handler):
     product_data = generate_new_product_data(api_handler)
 
     return product_data
+
+@pytest.fixture(scope="session", autouse=True)
+def configure_test_id(playwright):
+    # Change the default 'data-testid' to 'data-test'
+    playwright.selectors.set_test_id_attribute("data-test")
