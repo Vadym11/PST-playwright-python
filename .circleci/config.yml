@@ -49,7 +49,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Playwright Tests *${CIRCLE_JOB_STATUS}* \n *Branch:* ${CIRCLE_BRANCH}"
+                    "text": "*Playwright Results:* ${CIRCLE_JOB_STATUS}\n*Branch:* ${CIRCLE_BRANCH}\n\n<https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html|View Full Allure Report>"
                   }
                 }
               ]
