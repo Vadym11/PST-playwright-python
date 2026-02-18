@@ -48,18 +48,8 @@ jobs:
           fail_only: false
           webhook: "${SLACK_WEBHOOK}"
           only_for_branches: main
-          custom: |
-            {
-              "text": "Playwright Test Results",
-              "attachments": [
-                {
-                  "color": "#36a64f",
-                  "title": "Allure Report",
-                  "title_link": "https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html",
-                  "text": "Status: ${CIRCLE_JOB_STATUS}\nBranch: ${CIRCLE_BRANCH}"
-                }
-              ]
-            }
+          success_message: "Tests Passed! View Report: https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
+          failure_message: "Tests Failed! View Report: https://output.circle-artifacts.com{CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
           mentions: "here"
 
 workflows:
