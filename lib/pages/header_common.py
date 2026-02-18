@@ -4,7 +4,7 @@ from playwright.sync_api import Page, Locator
 # from lib.pages.account.profile_page import ProfilePage
 # from lib.pages.account.favorites_page import FavoritesPage
 # from lib.pages.account.invoices_page import InvoicesPage
-from lib.pages.home_page import HomePage  # Importing HomePage for navigation
+# from lib.pages.home_page import HomePage  # Importing HomePage for navigation
 
 
 class HeaderCommon:
@@ -63,14 +63,14 @@ class HeaderCommon:
         self.click_sign_out()
         return self
 
-    def click_cart_icon(self) -> ShoppingCartMainPage:
-        self.__cart_icon.click()
-        return ShoppingCartMainPage(self._page)
+    # def click_cart_icon(self) -> ShoppingCartMainPage:
+    #     self.__cart_icon.click()
+    #     return ShoppingCartMainPage(self._page)
 
-    def click_home_page_link(self) -> "HomePage":
+    def click_home_page_link(self):
         # Import inside the method to avoid circular import issues with HomePage
         from lib.pages.home_page import HomePage
 
         self._page.wait_for_load_state("networkidle")
         self.__home_page_link.click()
-        return HomePage(self._page)
+        # return HomePage(self._page)

@@ -21,8 +21,8 @@ class ProductAPI:
     def delete_by_id(self, product_id: str) -> Any:
         response = self.api_handler.delete(f'/products/{product_id}')
 
-        if response.raise_for_status() is None:  # If no exception was raised, it means the deletion was successful
-            return response.status_code  # Return the status code (e.g., 204 for No Content)
+        if response == 204:  # If no exception was raised, it means the deletion was successful
+            return response # Return the status code (e.g., 204 for No Content)
 
         raise Exception(f'Product with id "{product_id}" not found.')
 

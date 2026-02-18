@@ -15,7 +15,7 @@ class HomePage(BasePage):
 
     def go_to(self) -> "HomePage":
         # Use _page to match your BasePage
-        self._page.goto("/")
+        self._page.goto("http://localhost:8080")
         return self
 
     def filter_eco_products(self) -> "HomePage":

@@ -1,8 +1,7 @@
-from typing import List, Optional
 from pydantic import BaseModel
-from category import Category
-from brand import GetBrand
-from image import ProductImage
+from .category import Category
+from .brand import GetBrand
+from .image import ProductImage
 
 
 class BaseProduct(BaseModel):
