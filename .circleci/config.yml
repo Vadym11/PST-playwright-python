@@ -54,6 +54,3 @@ workflows:
   playwright-workflow:
     jobs:
       - run-playwright-tests:
-          filters:
-            branches:
-              only: [main]
