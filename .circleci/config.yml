@@ -55,7 +55,6 @@ jobs:
           failure_message: "Tests Failed! View Report: https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
           mentions: "here"
 
-jobs:
   automated-api-tests:
     docker:
       - image: cimg/base:2021.04
