@@ -69,7 +69,7 @@ jobs:
           # don't forget to set POSTMAN_API_KEY in CircleCI project settings
           command: postman login --with-api-key $POSTMAN_API_KEY
       - run: |
-            postman collection run "8893549-0680ce09-fa22-412c-9889-3da341be4cb9" --env-var "baseUrl=https://api.practicesoftwaretesting.com"
+            postman collection run "8893549-0680ce09-fa22-412c-9889-3da341be4cb9" --env-var "baseURL=https://api.practicesoftwaretesting.com"
 
 workflows:
   playwright-workflow:
