@@ -55,3 +55,8 @@ class ProductAPI:
             return self.delete_by_id(product_id)
 
         raise Exception(f'Product with name "{product_name}" not found.')
+
+    def get_by_id(self, product_id: str) -> GetProductResponse:
+        response = self.api_handler.get(f'/products/{product_id}')
+
+        return GetProductResponse.model_validate(response)

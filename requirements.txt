@@ -13,6 +13,7 @@ idna==3.11
 iniconfig==2.1.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
+nodeenv==1.10.0
 packaging==26.0
 pillow==12.1.0
 playwright==1.58.0
@@ -21,6 +22,7 @@ pydantic==2.12.5
 pydantic_core==2.41.5
 pyee==13.0.1
 Pygments==2.19.2
+pyright==1.1.408
 pytest==8.4.2
 pytest-base-url==2.1.0
 pytest-metadata==3.1.1
