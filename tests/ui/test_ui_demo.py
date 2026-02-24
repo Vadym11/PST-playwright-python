@@ -41,7 +41,7 @@ def test_login_success(page: Page):
     expect(page.get_by_role('heading', name='Login')).to_be_visible()
     expect(page.get_by_test_id('login-form')).to_be_visible()
 
-    page.get_by_test_id('email').fill('customer@practicesoftwaretesting.com')
+    page.get_by_test_id('email').fill('customer2@practicesoftwaretesting.com')
     page.get_by_test_id('password').fill('welcome01')
 
     page.get_by_test_id('login-submit').click()
