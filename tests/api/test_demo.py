@@ -14,7 +14,7 @@ print(f'Baser api url is set to {api_url}')
 
 @allure.story("Test create product 0")
 @allure.title("Verify the create products API 0")
-@allure.description("verify the create product API response status code and data 0")
+@allure.description("verify the create product API response status code and response data")
 @allure.severity("normal")
 @pytest.mark.Regression  # mark the test case as regression
 def test_get_products():
