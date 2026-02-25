@@ -3,7 +3,6 @@ from .category import Category
 from .brand import GetBrand
 from .image import ProductImage
 
-
 class BaseProduct(BaseModel):
     name: str
     description: str

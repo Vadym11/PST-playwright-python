@@ -1,4 +1,5 @@
-from playwright.sync_api import Page, Locator
+from __future__ import annotations # let using the class name as a return type hint within the class itself
+from playwright.sync_api import Page
 # Assuming your package structure: lib/pages/...
 # from lib.pages.shopping_cart.shopping_cart_main_page import ShoppingCartMainPage
 # from lib.pages.account.profile_page import ProfilePage
@@ -39,7 +40,7 @@ class HeaderCommon:
     #     self.click_user_nav_menu()
     #     return self.click_invoice_link()
 
-    def click_user_nav_menu(self) -> "HeaderCommon":
+    def click_user_nav_menu(self) -> HeaderCommon:
         self.__user_nav_menu.click()
         return self
 
@@ -58,7 +59,7 @@ class HeaderCommon:
     def click_sign_out(self) -> None:
         self.__sign_out_link.click()
 
-    def sign_out(self) -> "HeaderCommon":
+    def sign_out(self) -> HeaderCommon:
         self.click_user_nav_menu()
         self.click_sign_out()
         return self
@@ -67,7 +68,7 @@ class HeaderCommon:
     #     self.__cart_icon.click()
     #     return ShoppingCartMainPage(self._page)
 
-    def click_home_page_link(self):
+    def click_home_page_link(self) -> None:
         # Import inside the method to avoid circular import issues with HomePage
         from lib.pages.home_page import HomePage
 
