@@ -1,7 +1,9 @@
-import json
-from typing import Optional, Any, Dict
+from typing import Optional, Any
+
+from dotenv.variables import Literal
+
 from lib.api_models.general import PaginatedResponse
-from lib.api_models.product import GetProductResponse
+from lib.api_models.product import GetProductResponse, Product
 
 class ProductAPI:
 
@@ -13,16 +15,17 @@ class ProductAPI:
 
         return PaginatedResponse[GetProductResponse].model_validate(products)
 
-    def create(self, product_data: Dict[str, Any]) -> GetProductResponse:
-        response = self.api_handler.post('/products', product_data)
+    def create(self, product_data: Product) -> GetProductResponse:
+        data = product_data.model_dump()
+        response = self.api_handler.post('/products', data)
 
         return GetProductResponse.model_validate(response)
 
-    def delete_by_id(self, product_id: str) -> Any:
+    def delete_by_id(self, product_id: str) -> int:
         response = self.api_handler.delete(f'/products/{product_id}')
 
         if response == 204:  # If no exception was raised, it means the deletion was successful
-            return response # Return the status code (e.g., 204 for No Content)
+            return 204 # Return the status code (e.g., 204 for No Content)
 
         raise Exception(f'Product with id "{product_id}" not found.')
 
@@ -48,7 +51,7 @@ class ProductAPI:
 
         return None
 
-    def delete_by_name(self, product_name) -> Any:
+    def delete_by_name(self, product_name: str) -> int | None:
         product_id = self.get_product_id(product_name)
 
         if product_id is not None:

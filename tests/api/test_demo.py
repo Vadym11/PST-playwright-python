@@ -58,9 +58,9 @@ def test_get_all_products(product_api):
 def test_create_product(api_handler, product_api, created_product, generated_product_data):
     product_data = generated_product_data
 
-    assert created_product.name == product_data.get("name")
-    assert created_product.description == product_data.get("description")
-    assert created_product.price == product_data.get("price")
+    assert created_product.name == product_data.name
+    assert created_product.description == product_data.description
+    assert created_product.price == product_data.price
 
 @allure.story("Test delete product")
 @allure.title("Verify the delete products API")

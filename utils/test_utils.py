@@ -1,11 +1,13 @@
 import random
+from typing import List
 from faker import Faker
-
+from lib.api_models.product import Product
 from utils.api_utils import *
+from dataclasses import asdict
 
 fake = Faker('en_US')
 
-def generate_new_product_data(api_handler):
+def generate_new_product_data(api_handler) -> Product:
     name = fake.catch_phrase()
     description = fake.bs().title()
     # price() returns a string in Faker, so we float it
@@ -15,26 +17,38 @@ def generate_new_product_data(api_handler):
     is_rental = random.choice([0, 1])
     co2_rating = random.choice(['A', 'B', 'C', 'D', 'E'])
 
-    # Await the async ID lookups
+    # Await the ID lookups
     category_id = random.choice(get_category_ids(api_handler))
     brand_id = random.choice(get_brand_ids(api_handler))
     product_image_id = random.choice(get_image_ids(api_handler))
 
     print(f"Generated Product Name: {name}")
 
-    return {
-        "name": name,
-        "description": description,
-        "price": price,
-        "is_location_offer": is_location_offer,
-        "is_rental": is_rental,
-        "co2_rating": co2_rating,
-        "category_id": category_id,
-        "brand_id": brand_id,
-        "product_image_id": product_image_id,
-    }
+    return Product(
+        name=name,
+        description=description,
+        price=price,
+        is_location_offer=is_location_offer,
+        is_rental=is_rental,
+        co2_rating=co2_rating,
+        category_id=category_id,
+        brand_id=brand_id,
+        product_image_id=product_image_id,
+    )
 
-def get_category_ids(api_handler):
+    # return {
+    #     "name": name,
+    #     "description": description,
+    #     "price": price,
+    #     "is_location_offer": is_location_offer,
+    #     "is_rental": is_rental,
+    #     "co2_rating": co2_rating,
+    #     "category_id": category_id,
+    #     "brand_id": brand_id,
+    #     "product_image_id": product_image_id,
+    # }
+
+def get_category_ids(api_handler) -> List[str]:
     categories = get_all_categories(api_handler)
 
     category_ids = []
@@ -43,7 +57,7 @@ def get_category_ids(api_handler):
 
     return category_ids
 
-def get_brand_ids(api_handler):
+def get_brand_ids(api_handler) -> List[str]:
     brands = get_all_brands(api_handler)
 
     brand_ids = []
@@ -52,7 +66,7 @@ def get_brand_ids(api_handler):
 
     return brand_ids
 
-def get_image_ids(api_handler):
+def get_image_ids(api_handler) -> List[str]:
     images = get_all_images(api_handler)
 
     image_ids = []
@@ -60,4 +74,3 @@ def get_image_ids(api_handler):
         image_ids.append(image["id"])
 
     return image_ids
-
