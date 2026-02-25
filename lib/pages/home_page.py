@@ -13,9 +13,9 @@ class HomePage(BasePage):
         super().__init__(page)
         self.header = HeaderCommon(page)
 
-    def go_to(self) -> "HomePage":
+    def go_to(self, url) -> "HomePage":
         # Use _page to match your BasePage
-        self._page.goto("http://localhost:8080")
+        self._page.goto(url, wait_until="networkidle", timeout=60000)
         return self
 
     def filter_eco_products(self) -> "HomePage":

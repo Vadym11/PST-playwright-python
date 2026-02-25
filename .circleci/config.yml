@@ -30,7 +30,10 @@ jobs:
       - run:
           name: Run Playwright Tests
           command: |
-            pytest --alluredir=allure-results --tracing=retain-on-failure
+            pytest --alluredir=allure-results \
+                   --screenshot=only-on-failure \
+                   --video=retain-on-failure \
+                   --tracing=retain-on-failure
           when: always
 
       - run:
@@ -47,13 +50,29 @@ jobs:
       - slack/status:
           fail_only: false
           webhook: "${SLACK_WEBHOOK}"
-          only_for_branches: main
+#          only_for_branches: main
+          success_message: "Tests Passed! View Report: https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
+          failure_message: "Tests Failed! View Report: https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
           mentions: "here"
+
+  automated-api-tests:
+    docker:
+      - image: cimg/base:2021.04
+    steps:
+      - checkout
+      - run:
+          name: Install Postman CLI
+          command: |
+            curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - run:
+          name: Login using your API key
+          # don't forget to set POSTMAN_API_KEY in CircleCI project settings
+          command: postman login --with-api-key $POSTMAN_API_KEY
+      - run: |
+            postman collection run "8893549-0680ce09-fa22-412c-9889-3da341be4cb9" --env-var "baseURL=https://api.practicesoftwaretesting.com"
 
 workflows:
   playwright-workflow:
     jobs:
-      - run-playwright-tests:
-          filters:
-            branches:
-              only: [main]
+      - run-playwright-tests
+      - automated-api-tests

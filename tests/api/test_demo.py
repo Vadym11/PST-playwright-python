@@ -5,7 +5,12 @@ from conftest import product_api
 from utils.load_settings import settings
 import pytest
 
-api_url = settings['api-url']
+if not os.getenv('API_URL'):
+    api_url = settings['api-url_']
+else:
+    api_url = os.getenv('API_URL')
+
+print(f'Baser api url is set to {api_url}')
 
 @allure.story("Test create product 0")
 @allure.title("Verify the create products API 0")
