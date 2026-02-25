@@ -55,7 +55,7 @@ jobs:
           failure_message: "Tests Failed! View Report: https://output.circle-artifacts.com/output/job/${CIRCLE_WORKFLOW_JOB_ID}/artifacts/0/allure-report/index.html"
           mentions: "here"
 
-  automated-api-tests:
+  postman-api-tests:
     docker:
       - image: cimg/base:2021.04
     steps:
@@ -72,7 +72,7 @@ jobs:
             postman collection run "8893549-0680ce09-fa22-412c-9889-3da341be4cb9" --env-var "baseURL=https://api.practicesoftwaretesting.com"
 
 workflows:
-  playwright-workflow:
+  playwright-full-workflow:
     jobs:
-      - run-playwright-tests
-      - automated-api-tests
+      - playwright-tests
+      - postman-api-tests
