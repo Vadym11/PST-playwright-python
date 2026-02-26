@@ -29,15 +29,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: List All Available Python Versions
-          command: pyenv versions
-      - run:
-            name: Set Python Version
-            # set desired python version
-            command: |
-              pyenv global 3.12.12 
-              python --version
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
