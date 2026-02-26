@@ -23,9 +23,12 @@ jobs:
           command: pyright
 
   playwright-tests:
-    machine:
-      image: ubuntu-2204:current
-      resource_class: large
+    docker:
+      # Match the Playwright version in your requirements.txt (e.g., v1.49.0)
+      # This image includes Python 3.12 and all browser dependencies
+      - image: mcr.microsoft.com/playwright/python:v1.46.0-noble  # Python 3.12 +
+
+    resource_class: large
 
     steps:
       - checkout
@@ -34,10 +37,8 @@ jobs:
           pip-dependency-file: requirements.txt
 
       - run:
-          name: Install Playwright & Allure
+          name: Install Allure
           command: |
-            pip install pytest-playwright allure-pytest
-            playwright install chromium
             ALLURE_VERSION="2.24.0"
             curl -L -o allure.tgz "https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz"
             tar -xzf allure.tgz
@@ -47,7 +48,7 @@ jobs:
       - run:
           name: Run Playwright Tests
           command: |
-            pytest --alluredir=allure-results \
+            python3 -m pytest --alluredir=allure-results \
                    --screenshot=only-on-failure \
                    --video=retain-on-failure \
                    --tracing=retain-on-failure
