@@ -26,7 +26,7 @@ jobs:
     docker:
       # Match the Playwright version in your requirements.txt (e.g., v1.49.0)
       # This image includes Python 3.12 and all browser dependencies
-      - image: mcr.microsoft.com/playwright/python:v1.46.0-noble  # Python 3.12 +
+      - image: mcr.microsoft.com/playwright/python:v1.46.0-jammy  # Python 3.12 +
 
     resource_class: large
 
