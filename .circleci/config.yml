@@ -24,9 +24,7 @@ jobs:
 
   playwright-tests:
     docker:
-      # Match the Playwright version in your requirements.txt (e.g., v1.49.0)
-      # This image includes Python 3.12 and all browser dependencies
-      - image: mcr.microsoft.com/playwright/python:v1.46.0-jammy  # Python 3.12 +
+      - image: mcr.microsoft.com/playwright/python:v1.58.0-jammy  # Python 3.12 +
 
     resource_class: large
 
@@ -42,8 +40,8 @@ jobs:
             ALLURE_VERSION="2.24.0"
             curl -L -o allure.tgz "https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz"
             tar -xzf allure.tgz
-            sudo mv allure-${ALLURE_VERSION} /opt/allure
-            sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+            mv allure-${ALLURE_VERSION} /opt/allure
+            ln -s /opt/allure/bin/allure /usr/bin/allure
 
       - run:
           name: Run Playwright Tests
