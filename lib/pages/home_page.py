@@ -1,4 +1,7 @@
 from __future__ import annotations # let using the class name as a return type hint within the class itself
+
+import os
+
 from playwright.sync_api import Page
 from faker import Faker
 from lib.pages.base_page import BasePage
@@ -9,6 +12,11 @@ from utils.load_settings import settings
 
 fake = Faker()
 
+if not os.getenv('WEB_URL'):
+    web_url = settings['web-url_'] or ''
+else:
+    web_url = os.getenv('WEB_URL') or ''
+
 class HomePage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
@@ -16,7 +24,7 @@ class HomePage(BasePage):
 
     def go_to(self) -> HomePage:
         # Use _page to match your BasePage
-        self._page.goto(settings['web-url'], wait_until="networkidle", timeout=60000)
+        self._page.goto(web_url, wait_until="networkidle", timeout=60000)
         return self
 
     def filter_eco_products(self) -> HomePage:
