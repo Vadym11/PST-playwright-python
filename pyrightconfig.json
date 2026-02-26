@@ -1,0 +1,22 @@
+{
+  "include": [
+    "tests",
+    "utils",
+    "AOM",
+    "lib",
+    "conftest.py"
+  ],
+  "exclude": [
+    "pytest.ini",
+    "**/node_modules",
+    "**/__pycache__",
+    ".venv",
+    "reports",
+    "test-results",
+    ".circleci",
+    ".cmd"
+  ],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "basic",
+  "reportMissingImports": true
+}

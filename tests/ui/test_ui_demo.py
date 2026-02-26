@@ -6,9 +6,9 @@ from lib.pages.home_page import HomePage
 from utils.load_settings import settings
 
 if not os.getenv('WEB_URL'):
-    web_url = settings['web-url_']
+    web_url = settings['web-url_'] or ''
 else:
-    web_url = os.getenv('WEB_URL')
+    web_url = os.getenv('WEB_URL') or ''
 
 print(f'Base web url is set to {web_url}')
 
@@ -56,7 +56,7 @@ def test_login_success(page: Page):
 @allure.severity("critical")
 @pytest.mark.Smoke  # mark the test case as smoke
 def test_add_to_cart(page: Page):
-    product_page = HomePage(page).go_to(web_url).click_random_product()
+    product_page = HomePage(page).go_to().click_random_product()
 
     product_page.click_add_to_cart_and_assert_pop_ups()
 

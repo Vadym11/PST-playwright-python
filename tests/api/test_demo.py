@@ -6,9 +6,9 @@ from utils.load_settings import settings
 import pytest
 
 if not os.getenv('API_URL'):
-    api_url = settings['api-url_']
+    api_url = settings['api-url_'] or ''
 else:
-    api_url = os.getenv('API_URL')
+    api_url = os.getenv('API_URL') or ''
 
 print(f'Baser api url is set to {api_url}')
 
@@ -27,15 +27,15 @@ def test_get_products():
         assert 'id' in product
         assert product["id"] == product.get("id")
 
-def test_get_all_products(product_api):
-    response = product_api.get_all_products()
-
-    assert response.status_code == 200
-
-    for product in response['data']:
-        assert 'id' in product
-        assert 'name' in product
-        assert 'description' in product
+# def test_get_all_products(product_api):
+#     response = product_api.get_all_products()
+#
+#     assert response.status_code == 200
+#
+#     for product in response['data']:
+#         assert 'id' in product
+#         assert 'name' in product
+#         assert 'description' in product
 
 @allure.story("Test get all products")
 @allure.title("Verify the get all products API")

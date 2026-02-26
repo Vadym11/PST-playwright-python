@@ -1,5 +1,7 @@
 from __future__ import annotations # let using the class name as a return type hint within the class itself
 from playwright.sync_api import Page
+from lib.pages.auth_page import AuthPage
+
 # Assuming your package structure: lib/pages/...
 # from lib.pages.shopping_cart.shopping_cart_main_page import ShoppingCartMainPage
 # from lib.pages.account.profile_page import ProfilePage
@@ -25,8 +27,10 @@ class HeaderCommon:
     def click_main_banner(self) -> None:
         self.__main_banner.click()
 
-    def click_sign_in_link(self) -> None:
+    def click_sign_in_link(self) -> AuthPage:
         self.__sign_in_link.click()
+
+        return AuthPage(self._page)
 
     # def click_favorites_link(self) -> FavoritesPage:
     #     self.__favorites_link.click()

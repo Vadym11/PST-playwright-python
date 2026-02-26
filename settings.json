@@ -1,5 +1,5 @@
 {
-  "url": "http://localhost:8080/",
+  "web-url": "http://localhost:8080/",
   "api-url": "http://localhost:8080/api",
   "api-url_": "https://api.practicesoftwaretesting.com",
   "web-url_": "https://practicesoftwaretesting.com",
