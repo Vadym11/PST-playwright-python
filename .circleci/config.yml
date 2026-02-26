@@ -53,6 +53,17 @@ jobs:
           when: always
 
       - run:
+          # this is neede to generate allure report with screenshots and videos
+          name: Install Java
+          command: |
+            apt-get update
+            apt-get install -y openjdk-11-jdk  # Or openjdk-17-jdk
+            echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> $BASH_ENV
+            echo 'export PATH="$JAVA_HOME/bin:$PATH"' >> $BASH_ENV
+            source $BASH_ENV
+            java -version  # Verify
+
+      - run:
           name: Generate Allure Report
           command: allure generate allure-results -o allure-report --clean
           when: always
