@@ -1,10 +1,27 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@2.1.1
+  python: circleci/python@2.1.1 # orb version 2.1.1 for Python support
   slack: circleci/slack@3.4.2 # Use v3 for Webhook support
 
 jobs:
+  # This job is dedicated to static type checking using Pyright.
+  type-check:
+    docker:
+      - image: cimg/python:3.12 # Fast docker executor for static analysis
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependency-file: requirements.txt
+      - run:
+          name: Install Pyright
+          # 'pyright[nodejs]' is the most reliable way to install via pip
+          command: pip install "pyright[nodejs]"
+      - run:
+          name: Run Pyright
+          command: pyright
+
   playwright-tests:
     machine:
       image: ubuntu-2204:current
@@ -12,6 +29,15 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: List All Available Python Versions
+          command: pyenv versions
+      - run:
+            name: Set Python Version
+            # set desired python version
+            command: |
+              pyenv global 3.12.12 
+              python --version
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
@@ -74,5 +100,8 @@ jobs:
 workflows:
   playwright-full-workflow:
     jobs:
-      - playwright-tests
+      - type-check
+      - playwright-tests:
+          requires:
+            - type-check
       - postman-api-tests

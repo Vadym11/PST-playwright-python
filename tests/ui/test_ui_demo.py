@@ -6,9 +6,9 @@ from lib.pages.home_page import HomePage
 from utils.load_settings import settings
 
 if not os.getenv('WEB_URL'):
-    web_url = settings['web-url_']
+    web_url = settings['web-url_'] or ''
 else:
-    web_url = os.getenv('WEB_URL')
+    web_url = os.getenv('WEB_URL') or ''
 
 print(f'Base web url is set to {web_url}')
 
