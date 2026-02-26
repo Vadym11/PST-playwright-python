@@ -5,5 +5,5 @@ class BasePage(ABC):
     def __init__(self, page: Page):
         self._page = page
 
-    def get_page(self) -> Page:
-        return self._page
+    # def get_page(self) -> Page:
+    #     return self.page

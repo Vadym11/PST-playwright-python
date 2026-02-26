@@ -5,18 +5,18 @@ from lib.pages.base_page import BasePage
 # Note: These imports assume your package structure is set up
 from lib.pages.header_common import HeaderCommon
 from lib.pages.product_page import ProductPage
+from utils.load_settings import settings
 
 fake = Faker()
-
 
 class HomePage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
         self.header = HeaderCommon(page)
 
-    def go_to(self, url) -> HomePage:
+    def go_to(self) -> HomePage:
         # Use _page to match your BasePage
-        self._page.goto(url, wait_until="networkidle", timeout=60000)
+        self._page.goto(settings['web-url'], wait_until="networkidle", timeout=60000)
         return self
 
     def filter_eco_products(self) -> HomePage:

@@ -2,7 +2,7 @@ import allure
 import pytest
 from AOM.product_api import ProductAPI
 from utils.api_handler import APIHandler
-from utils.test_utils import generate_new_product_data
+from utils.test_utils import generate_new_product_data, generate_random_user_data_faker
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
@@ -49,3 +49,9 @@ def generated_product_data(api_handler):
 def configure_test_id(playwright):
     # Change the default 'data-testid' to 'data-test'
     playwright.selectors.set_test_id_attribute("data-test")
+
+@pytest.fixture(scope="module")
+def random_user_data():
+    random_user_data = generate_random_user_data_faker()
+
+    return random_user_data
