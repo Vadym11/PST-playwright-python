@@ -17,6 +17,7 @@ jobs:
       - run:
           name: Install Pyright
           # 'pyright[nodejs]' is the most reliable way to install via pip
+          # since pyright has a node dependency and this ensures it's included
           command: pip install "pyright[nodejs]"
       - run:
           name: Run Pyright
