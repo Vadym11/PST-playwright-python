@@ -15,8 +15,8 @@ jobs:
       # 1. Restore Cache
       - restore_cache:
           keys:
-            - v1-deps-{{ checksum "requirements.txt" }}
-            - v1-deps-
+            - v2-deps-{{ checksum "requirements.txt" }}
+            - v2-deps-
 
       # 2. Install Python Packages + Browsers
       - run:
