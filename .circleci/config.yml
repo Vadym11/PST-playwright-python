@@ -8,20 +8,27 @@ jobs:
   # This job is dedicated to static type checking using Pyright.
   type-check:
     docker:
-      - image: cimg/python:3.12 # Fast docker executor for static analysis
+      - image: cimg/python:3.12
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          pip-dependency-file: requirements.txt
+      - restore_cache:
+          keys:
+            - v1-typecheck-{{ checksum "requirements.txt" }}
+            - v1-typecheck-
       - run:
-          name: Install Pyright
-          # 'pyright[nodejs]' is the most reliable way to install via pip
-          # since pyright has a node dependency and this ensures it's included
-          command: pip install "pyright[nodejs]"
+          name: Install Deps & Pyright
+          command: |
+            pip install --user -r requirements.txt "pyright[nodejs]"
+      - save_cache:
+          key: v1-typecheck-{{ checksum "requirements.txt" }}
+          paths:
+            - ~/.local
       - run:
           name: Run Pyright
-          command: pyright
+          # Ensure the path is set so Pyright can find your 'user' installed libs
+          command: |
+            export PATH=$HOME/.local/bin:$PATH
+            pyright
 
   playwright-tests:
     docker:
