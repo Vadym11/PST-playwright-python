@@ -25,6 +25,8 @@ jobs:
   playwright-tests:
     docker:
       - image: vtymeichuk/playwright_allure:v1-cimg # Python 3.12 +
+        environment:
+          JAVA_HOME: /usr/lib/jvm/msopenjdk-17-amd64
 
     resource_class: large
 
