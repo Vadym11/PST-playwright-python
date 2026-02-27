@@ -24,7 +24,7 @@ jobs:
 
   playwright-tests:
     docker:
-      - image: vtymeichuk/playwright_allure:v1  # Python 3.12 +
+      - image: vtymeichuk/playwright_allure:v1-cimg # Python 3.12 +
 
     resource_class: large
 
