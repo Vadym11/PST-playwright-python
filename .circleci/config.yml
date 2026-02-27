@@ -29,7 +29,7 @@ jobs:
 
       # 3. Save Cache (Stores both PIP packages and the Browser binaries)
       - save_cache:
-          key: v1-deps-{{ checksum "requirements.txt" }}
+          key: v2-deps-{{ checksum "requirements.txt" }}
           paths:
             - ~/.local/lib/python3.12/site-packages
             - ~/.cache/ms-playwright
