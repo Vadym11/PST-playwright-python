@@ -34,11 +34,12 @@ jobs:
       - checkout
       - run:
         name: Setup JAVA_HOME
+        # This command finds the actual installation directory of the java binary
+        # Write it to $BASH_ENV so all subsequent steps can use it
         command: |
-          # This command finds the actual installation directory of the java binary
           JAVA_PATH=$(readlink -f $(which java) | sed "s:/bin/java::")
           echo "Found Java at: $JAVA_PATH"
-          # Write it to $BASH_ENV so all subsequent steps can use it
+          
           echo "export JAVA_HOME=$JAVA_PATH" >> $BASH_ENV
           echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> $BASH_ENV
       - run:
