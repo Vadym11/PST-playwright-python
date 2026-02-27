@@ -68,11 +68,6 @@ jobs:
           command: |
             java -version
             allure --version
-
-      - python/install-packages:
-          pkg-manager: pip
-          pip-dependency-file: requirements.txt
-
       - run:
           name: Run Playwright Tests
           command: |
