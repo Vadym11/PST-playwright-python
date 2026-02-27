@@ -11,6 +11,29 @@ jobs:
       - image: cimg/python:3.12 # Fast docker executor for static analysis
     steps:
       - checkout
+
+      # 1. Restore Cache
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "requirements.txt" }}
+            - v1-deps-
+
+      # 2. Install Python Packages + Browsers
+      - run:
+          name: Install Dependencies
+          command: |
+            # Install to user directory so it's easy to cache
+            pip install --user -r requirements.txt
+            # This only downloads if NOT found in the restored cache
+            python3 -m playwright install chromium
+
+      # 3. Save Cache (Stores both PIP packages and the Browser binaries)
+      - save_cache:
+          key: v1-deps-{{ checksum "requirements.txt" }}
+          paths:
+            - ~/.local/lib/python3.12/site-packages
+            - ~/.cache/ms-playwright
+
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
@@ -24,7 +47,7 @@ jobs:
 
   playwright-tests:
     docker:
-      - image: vtymeichuk/playwright_allure:v1-cimg # Python 3.12 +
+      - image: vtymeichuk/playwright_allure:v2-cimg # Python 3.12 +
         environment:
           JAVA_HOME: /usr/lib/jvm/msopenjdk-17-amd64
 
