@@ -15,8 +15,8 @@ jobs:
       # 1. Restore Cache
       - restore_cache:
           keys:
-            - v2-deps-{{ checksum "requirements.txt" }}
-            - v2-deps-
+            - v3-deps-{{ checksum "requirements.txt" }}
+            - v3-deps-
 
       # 2. Install Python Packages + Browsers
       - run:
@@ -29,7 +29,7 @@ jobs:
 
       # 3. Save Cache (Stores both PIP packages and the Browser binaries)
       - save_cache:
-          key: v2-deps-{{ checksum "requirements.txt" }}
+          key: v3-deps-{{ checksum "requirements.txt" }}
           paths:
             - ~/.local/lib/python3.12/site-packages
             - ~/.cache/ms-playwright
