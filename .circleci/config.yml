@@ -11,29 +11,6 @@ jobs:
       - image: cimg/python:3.12 # Fast docker executor for static analysis
     steps:
       - checkout
-
-      # 1. Restore Cache
-      - restore_cache:
-          keys:
-            - v3-deps-{{ checksum "requirements.txt" }}
-            - v3-deps-
-
-      # 2. Install Python Packages + Browsers
-      - run:
-          name: Install Dependencies
-          command: |
-            # Install to user directory so it's easy to cache
-            pip install --user -r requirements.txt
-            # This only downloads if NOT found in the restored cache
-            python3 -m playwright install chromium
-
-      # 3. Save Cache (Stores both PIP packages and the Browser binaries)
-      - save_cache:
-          key: v3-deps-{{ checksum "requirements.txt" }}
-          paths:
-            - ~/.local/lib/python3.12/site-packages
-            - ~/.cache/ms-playwright
-
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
@@ -55,6 +32,26 @@ jobs:
 
     steps:
       - checkout
+      # 1. Restore Cache
+      - restore_cache:
+          keys:
+            - v4-deps-{{ checksum "requirements.txt" }}
+            - v4-deps-
+      # 2. Install Python Packages + Browsers
+      - run:
+          name: Install Dependencies
+          command: |
+            # Install to user directory so it's easy to cache
+            pip install --user -r requirements.txt
+            # This only downloads if NOT found in the restored cache
+            python3 -m playwright install chromium
+      # 3. Save Cache (Stores both PIP packages and the Browser binaries)
+      - save_cache:
+          key: v4-deps-{{ checksum "requirements.txt" }}
+          paths:
+            - ~/.local/lib/python3.12/site-packages
+            - ~/.cache/ms-playwright
+
       - run:
           name: Setup JAVA_HOME
           # This command finds the actual installation directory of the java binary
