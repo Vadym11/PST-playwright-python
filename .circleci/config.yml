@@ -32,6 +32,21 @@ jobs:
 
     steps:
       - checkout
+      - run:
+        name: Setup JAVA_HOME
+        command: |
+          # This command finds the actual installation directory of the java binary
+          JAVA_PATH=$(readlink -f $(which java) | sed "s:/bin/java::")
+          echo "Found Java at: $JAVA_PATH"
+          # Write it to $BASH_ENV so all subsequent steps can use it
+          echo "export JAVA_HOME=$JAVA_PATH" >> $BASH_ENV
+          echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> $BASH_ENV
+      - run:
+        name: Verify Allure & Java
+        command: |
+          java -version
+          allure --version
+
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
