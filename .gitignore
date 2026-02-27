@@ -166,3 +166,7 @@ allure-results
 allure-reports
 allure-report
 .cmd
+
+Allure.Dockerfile
+Allure_.Dockerfile
+Allure__.Dockerfile
