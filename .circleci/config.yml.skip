@@ -5,49 +5,76 @@ orbs:
   slack: circleci/slack@3.4.2 # Use v3 for Webhook support
 
 jobs:
-  types-and-playwright-tests:
+  # This job is dedicated to static type checking using Pyright.
+  type-check:
     docker:
-      - image: vtymeichuk/playwright_allure:v2-cimg
-    resource_class: large
+      - image: cimg/python:3.12
     steps:
       - checkout
-
-      # 1. Unified Cache Restore
       - restore_cache:
           keys:
-            - v5-combined-{{ checksum "requirements.txt" }}
-            - v5-combined-
-
-      # 2. Install Everything (Libs + Pyright + Browsers)
+            - v1-typecheck-{{ checksum "requirements.txt" }}
+            - v1-typecheck-
       - run:
-          name: Install All Dependencies
+          name: Install Deps & Pyright
           command: |
             pip install --user -r requirements.txt "pyright[nodejs]"
-            python3 -m playwright install chromium
-
-      # 3. Unified Cache Save
       - save_cache:
-          key: v5-combined-{{ checksum "requirements.txt" }}
+          key: v1-typecheck-{{ checksum "requirements.txt" }}
           paths:
             - ~/.local
+      - run:
+          name: Run Pyright
+          # Ensure the path is set so Pyright can find your 'user' installed libs
+          command: |
+            export PATH=$HOME/.local/bin:$PATH
+            pyright
+
+  playwright-tests:
+    docker:
+      - image: vtymeichuk/playwright_allure:v2-cimg # Python 3.12 +
+        environment:
+          JAVA_HOME: /usr/lib/jvm/msopenjdk-17-amd64
+
+    resource_class: large
+
+    steps:
+      - checkout
+      # 1. Restore Cache
+      - restore_cache:
+          keys:
+            - v4-deps-{{ checksum "requirements.txt" }}
+            - v4-deps-
+      # 2. Install Python Packages + Browsers
+      - run:
+          name: Install Dependencies
+          command: |
+            # Install to user directory so it's easy to cache
+            pip install --user -r requirements.txt
+            # This only downloads if NOT found in the restored cache
+            python3 -m playwright install chromium
+      # 3. Save Cache (Stores both PIP packages and the Browser binaries)
+      - save_cache:
+          key: v4-deps-{{ checksum "requirements.txt" }}
+          paths:
+            - ~/.local/lib/python3.12/site-packages
             - ~/.cache/ms-playwright
 
-      # 4. Environment Setup (Java + Path)
       - run:
-          name: Setup Environment
+          name: Setup JAVA_HOME
+          # This command finds the actual installation directory of the java binary
+          # Write it to $BASH_ENV so all subsequent steps can use it
           command: |
             JAVA_PATH=$(readlink -f $(which java) | sed "s:/bin/java::")
+            echo "Found Java at: $JAVA_PATH"
+            
             echo "export JAVA_HOME=$JAVA_PATH" >> $BASH_ENV
-            # Add ~/.local/bin so 'pyright' and 'pytest' are found
-            echo "export PATH=$HOME/.local/bin:\$JAVA_HOME/bin:\$PATH" >> $BASH_ENV
-
-      # 5. FAST PASS: Run Type Check first
-      # If this fails, the whole job stops before wasting time/money on browsers
+            echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> $BASH_ENV
       - run:
-          name: Run Pyright Type Check
-          command: pyright
-
-      # 6. Run Playwright Tests
+          name: Verify Allure & Java
+          command: |
+            java -version
+            allure --version
       - run:
           name: Run Playwright Tests
           command: |
@@ -95,5 +122,8 @@ jobs:
 workflows:
   playwright-full-workflow:
     jobs:
-      - types-and-playwright-tests
+      - type-check
+      - playwright-tests:
+          requires:
+            - type-check
       - postman-api-tests
