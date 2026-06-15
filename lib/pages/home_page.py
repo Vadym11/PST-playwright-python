@@ -23,8 +23,10 @@ class HomePage(BasePage):
         self.header = HeaderCommon(page)
 
     def go_to(self) -> HomePage:
-        # Use _page to match your BasePage
-        self._page.goto(web_url, wait_until="networkidle", timeout=60000)
+        # Use _page to match BasePage
+        self._page.goto(web_url)
+        self._page.get_by_role("menubar", name="Main menu").wait_for(state="visible")
+
         return self
 
     def filter_eco_products(self) -> HomePage:

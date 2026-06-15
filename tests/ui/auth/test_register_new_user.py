@@ -1,7 +1,8 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
+from lib.api_models.user import CreateUser
 from lib.pages.home_page import HomePage
 
-def test_register_new_user_happy_path(page: Page, random_user_data):
+def test_register_new_user_happy_path(page: Page, random_user_data: CreateUser):
     """Register a new user."""
 
     home_page = HomePage(page).go_to()
