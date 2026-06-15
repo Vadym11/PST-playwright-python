@@ -5,12 +5,9 @@ from conftest import product_api
 from utils.load_settings import settings
 import pytest
 
-if not os.getenv('API_URL'):
-    api_url = settings['api-url_'] or ''
-else:
-    api_url = os.getenv('API_URL') or ''
+from utils.test_utils import base_api_url
 
-print(f'Baser api url is set to {api_url}')
+print(f'Baser api url is set to {base_api_url}')
 
 @allure.story("Test create product 0")
 @allure.title("Verify the create products API 0")
@@ -18,7 +15,7 @@ print(f'Baser api url is set to {api_url}')
 @allure.severity("normal")
 @pytest.mark.Regression  # mark the test case as regression
 def test_get_products():
-    api_endpoint = api_url + "/products/"
+    api_endpoint = base_api_url + "/products/"
     print(f'\n{api_endpoint}')
     response = requests.get(api_endpoint)
     assert response.status_code == 200

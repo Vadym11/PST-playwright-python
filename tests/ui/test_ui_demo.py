@@ -3,14 +3,10 @@ import allure
 import pytest
 from playwright.sync_api import Page, expect
 from lib.pages.home_page import HomePage
-from utils.load_settings import settings
 
-if not os.getenv('WEB_URL'):
-    web_url = settings['web-url_'] or ''
-else:
-    web_url = os.getenv('WEB_URL') or ''
+from utils.test_utils import base_api_url
 
-print(f'Base web url is set to {web_url}')
+print(f'Baser api url is set to {base_api_url}')
 
 @allure.story("Verify Home page")
 @allure.title("Verify Home page loads")
@@ -18,7 +14,7 @@ print(f'Base web url is set to {web_url}')
 @allure.severity("critical")
 @pytest.mark.Smoke  # mark the test case as smoke
 def test_main_page(page: Page):
-    page.goto(web_url)
+    page.goto('/')
     expect(page.get_by_test_id('nav-home')).to_be_visible()
     expect(page.get_by_test_id('nav-home')).to_have_text('Home')
 
@@ -32,7 +28,7 @@ def test_main_page(page: Page):
 @allure.severity("critical")
 @pytest.mark.Smoke  # mark the test case as smoke
 def test_login_success(page: Page):
-    page.goto(web_url)
+    page.goto('/')
 
     page.get_by_test_id('nav-sign-in').click()
 
