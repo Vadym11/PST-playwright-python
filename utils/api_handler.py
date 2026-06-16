@@ -2,15 +2,11 @@ import os
 from typing import Literal
 import requests
 from requests import HTTPError
-from utils.load_settings import settings
-from dotenv import load_dotenv
-
-load_dotenv()
-
+from utils.test_utils import base_api_url
 class APIHandler:
 
     def __init__(self):
-        self.base_url = os.getenv("API_URL", settings['api-url_'])
+        self.base_url = base_api_url
         self.email = os.getenv("EMAIL")
         self.password = os.getenv("PASSWORD_")
         self.token = ''

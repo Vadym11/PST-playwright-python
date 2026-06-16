@@ -1,9 +1,15 @@
+import os
 import random
 from typing import List
 from faker import Faker
 from lib.api_models.product import Product
 from lib.api_models.user import CreateUser, Address
 from utils.api_utils import *
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
+
+base_url = os.getenv('BASE_URL', 'https://www.practicesoftwaretesting.com')
 
 fake = Faker('en_US')
 
@@ -53,6 +59,7 @@ def generate_random_user_data_faker() -> CreateUser:
     last_name = fake.last_name().replace("'", "")
     dob = fake.date_of_birth(minimum_age=18, maximum_age=65).isoformat()
     street = fake.street_address()
+    house_number = fake.random_number(3, True)
     postal_code = fake.postcode()
     city = fake.city()
     state = fake.state()
@@ -71,6 +78,7 @@ def generate_random_user_data_faker() -> CreateUser:
         email=email,
         address=Address(
             street=street,
+            house_number=str(house_number),
             postal_code=postal_code,
             city=city,
             state=state,
@@ -105,3 +113,20 @@ def get_image_ids(api_handler) -> List[str]:
         image_ids.append(image["id"])
 
     return image_ids
+
+def get_base_api_url(base_url: str) -> str:
+    """
+    Extracts the base API URL from the given base URL.
+    For example, if the base URL is 'https://www.practicesoftwaretesting.com', 
+    it returns 'https://api.practicesoftwaretesting.com'.
+    """
+    if base_url is not None:
+        if 'practicesoftwaretesting' in base_url:
+            # Replace 'www' with 'api' in the domain
+            return base_url.replace("www", "api", 1)
+        elif 'localhost' in base_url:
+            return base_url + "/api"
+        else:
+            raise ValueError("Invalid base URL provided.")
+    
+base_api_url = get_base_api_url(base_url)

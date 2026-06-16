@@ -1,30 +1,24 @@
 from __future__ import annotations # let using the class name as a return type hint within the class itself
 
-import os
-
 from playwright.sync_api import Page
 from faker import Faker
 from lib.pages.base_page import BasePage
 # Note: These imports assume your package structure is set up
 from lib.pages.header_common import HeaderCommon
 from lib.pages.product_page import ProductPage
-from utils.load_settings import settings
+from utils.test_utils import base_api_url
 
 fake = Faker()
-
-if not os.getenv('WEB_URL'):
-    web_url = settings['web-url_'] or ''
-else:
-    web_url = os.getenv('WEB_URL') or ''
-
 class HomePage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
         self.header = HeaderCommon(page)
 
-    def go_to(self) -> HomePage:
-        # Use _page to match your BasePage
-        self._page.goto(web_url, wait_until="networkidle", timeout=60000)
+    def go_to(self, url: str) -> HomePage:
+        # Use _page to match BasePage
+        self._page.goto(url)
+        self._page.get_by_role("menubar", name="Main menu").wait_for(state="visible")
+
         return self
 
     def filter_eco_products(self) -> HomePage:
