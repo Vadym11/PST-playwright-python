@@ -170,3 +170,7 @@ allure-report
 Allure.Dockerfile
 Allure_.Dockerfile
 Allure__.Dockerfile
+
+
+# local python verioning
+.python-version
