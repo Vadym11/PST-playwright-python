@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Run Playwright Tests
           command: |
-            python3 -m pytest --headed--alluredir=allure-results \
+            python3 -m pytest --headed --alluredir=allure-results \
                    --screenshot=only-on-failure \
                    --video=retain-on-failure \
                    --tracing=retain-on-failure \
