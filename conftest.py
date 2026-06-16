@@ -1,9 +1,16 @@
 import os
 import allure
 import pytest
+from playwright_stealth import Stealth
 from AOM.product_api import ProductAPI
 from utils.api_handler import APIHandler
 from utils.test_utils import generate_new_product_data, generate_random_user_data_faker
+
+# to bypass bot detection on CircleCI
+@pytest.fixture
+def page(page):
+    Stealth().apply_stealth_sync(page)
+    return page
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
