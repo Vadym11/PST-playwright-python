@@ -54,7 +54,8 @@ jobs:
             python3 -m pytest --alluredir=allure-results \
                    --screenshot=only-on-failure \
                    --video=retain-on-failure \
-                   --tracing=retain-on-failure
+                   --tracing=retain-on-failure \
+                   --output=test-artifacts
           when: always
 
       - run:
@@ -65,7 +66,7 @@ jobs:
       - store_test_results:
           path: allure-results
       - store_artifacts:
-          path: allure-report
+          path: test-artifacts
 
       # Send notification based on job status
       - slack/status:
