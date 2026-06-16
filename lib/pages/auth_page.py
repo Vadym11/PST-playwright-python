@@ -20,6 +20,7 @@ class AuthPage(BasePage):
         self.__dob_input = self._page.get_by_test_id("dob")
         self.__phone_input = self._page.get_by_test_id("phone")
         self.__street_input = self._page.get_by_test_id("street")
+        self.__house_number_input = self._page.get_by_test_id("house_number")
         self.__city_input = self._page.get_by_test_id("city")
         self.__state_input = self._page.get_by_test_id("state")
         self.__postal_code_input = self._page.get_by_test_id("postal_code")
@@ -64,6 +65,10 @@ class AuthPage(BasePage):
         """Enter the street address."""
         self.__street_input.fill(street)
 
+    def enter_house_number(self, house_number: str) -> None:
+        """Enter the house number"""
+        self.__house_number_input.fill(house_number)
+
     def enter_city(self, city: str) -> None:
         """Enter the city."""
         self.__city_input.fill(city)
@@ -102,6 +107,10 @@ class AuthPage(BasePage):
         self.enter_dob(user.dob)
         self.enter_phone(user.phone)
         self.enter_street(user.address.street)
+        # FIXME: Remove this conditional testing when local testing env is updated to match the production site.
+        # This is a temporary workaround for the difference in the registration form.
+        if self.__house_number_input.is_visible():
+            self.enter_house_number(user.address.house_number)
         self.enter_city(user.address.city)
         self.enter_state(user.address.state)
         self.enter_postal_code(user.address.postal_code)
@@ -113,7 +122,6 @@ class AuthPage(BasePage):
 
     def click_register_button(self) -> AuthPage:
         """Click the register button."""
-        self.__register_button.wait_for(state="visible")
         self.__register_button.click()
 
         return self
