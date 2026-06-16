@@ -32,7 +32,7 @@ def test_login_success(page: Page):
 
     page.get_by_test_id('nav-sign-in').click()
 
-    page.wait_for_timeout(1000)  # wait for 5 seconds to allow the login page to load
+    page.wait_for_timeout(5000)  # wait for 5 seconds to allow the login page to load
 
     expect(page.get_by_role('heading', name='Login')).to_be_visible()
     expect(page.get_by_test_id('login-form')).to_be_visible()

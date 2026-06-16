@@ -4,8 +4,9 @@ from lib.pages.home_page import HomePage
 
 def test_register_new_user_happy_path(page: Page, random_user_data: CreateUser, base_url: str):
     """Register a new user."""
+    print(f'Navigating to base url: {base_url}')
 
-    home_page = HomePage(page).go_to(base_url)
+    home_page = HomePage(page).go_to('/')
     sign_in_page = home_page.header.click_sign_in_link()
 
     (sign_in_page
