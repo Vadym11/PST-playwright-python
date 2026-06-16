@@ -65,6 +65,10 @@ jobs:
 
       - store_test_results:
           path: allure-results
+
+      - store_artifacts:
+          path: allure-report
+
       - store_artifacts:
           path: test-artifacts
 

@@ -51,8 +51,8 @@ def test_login_success(page: Page):
 @allure.description("Verify a product in stock can be added to a cart successfully")
 @allure.severity("critical")
 @pytest.mark.Smoke  # mark the test case as smoke
-def test_add_to_cart(page: Page, base_url: str):
-    product_page = HomePage(page).go_to(base_url).click_random_product()
+def test_add_to_cart(page: Page):
+    product_page = HomePage(page).go_to('/').click_random_product()
 
     product_page.click_add_to_cart_and_assert_pop_ups()
 
